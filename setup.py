@@ -46,7 +46,7 @@ setup(
     description = 'Django application for displaying memcached status and info.',
     author = 'Arturo Fernandez',
     author_email = 'arturo@bsnux.com',
-    url = '',
+    url = 'https://github.com/bsnux/django-memcached-status',
     packages = packages,
     data_files = data_files,
     classifiers = ['Development Status :: 4 - Beta',
