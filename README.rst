@@ -5,3 +5,10 @@ Description
 -----------
 
 Small Django application for displaying status information about *memcached* servers used in your *Django* applications.
+
+Installation
+------------
+
+::
+
+$ python setup.py install
