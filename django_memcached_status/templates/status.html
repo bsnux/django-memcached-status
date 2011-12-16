@@ -1,21 +1,28 @@
 {% load status_tags %}
-
-<h1>memcached Status</h1>
-{% for k, v in servers.items %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <h1>memcached Status</h1>
+    {% for k, v in servers.items %}
     <h2>Summary for server: {{ k }}</h2>
     <ul>
-        <li><b>Memory usage</b>: {{ v.bytes|filesizeformat }}</li>
-        <li><b>Items in cache</b>: {{ v.curr_items }} of {{ v.total_items }}</li>
-        <li><b>Hits</b>: {{ v.get_hits }} of {{ v.cmd_get }} => <b>{{ v.hit_rate }}%</b></li>
-        <li><b>Traffic</b>: {{ v.bytes_read|filesizeformat }} in, {{ v.bytes_written|filesizeformat }} out</li>
-        <li><b>Uptime</b>: {{ v.uptime|from_sec_to_hm }}</li>
-        <li>{{ v.curr_connections }} <b>connections</b> being handled</li>
-        <li><b>Total connections</b>: {{ v.total_connections }}</li>
-        <li>{{ v.full }}% <b>full</b></li>
-        <li>{{ v.curr_items }} <b>items</b> using {{ v.bytes }} <b>bytes</b> of {{ v.limit_maxbytes }} <b>bytes</b></li>
-        <li>Total number of times a <b>GET command</b> was unable to retrieve and return data: {{ v.get_misses}}</li>
-        <li><b>PID</b>: {{ v.pid }}</li>
-   </ul>
-{% empty %}
-   <h3>Error: No connection to memcached server/s</h3>
-{% endfor %}
+      <li><b>Memory usage</b>: {{ v.bytes|filesizeformat }}</li>
+      <li><b>Items in cache</b>: {{ v.curr_items }} of {{ v.total_items }}</li>
+      <li><b>Hits</b>: {{ v.get_hits }} of {{ v.cmd_get }} => <b>{{ v.hit_rate }}%</b></li>
+      <li><b>Traffic</b>: {{ v.bytes_read|filesizeformat }} in, {{ v.bytes_written|filesizeformat }} out</li>
+      <li><b>Uptime</b>: {{ v.uptime|from_sec_to_hm }}</li>
+      <li>{{ v.curr_connections }} <b>connections</b> being handled</li>
+      <li><b>Total connections</b>: {{ v.total_connections }}</li>
+      <li>{{ v.full }}% <b>full</b></li>
+      <li>{{ v.curr_items }} <b>items</b> using {{ v.bytes }} <b>bytes</b> of {{ v.limit_maxbytes }} <b>bytes</b></li>
+      <li>Total number of times a <b>GET command</b> was unable to retrieve and return data: {{ v.get_misses}}</li>
+      <li><b>PID</b>: {{ v.pid }}</li>
+    </ul>
+    {% empty %}
+    <h3>Error: No connection to memcached server/s</h3>
+    {% endfor %}
+  </body>
+</html>
