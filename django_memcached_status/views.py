@@ -2,19 +2,25 @@ from django.http import Http404
 from django.shortcuts import render_to_response
 from django.conf import settings
 from django.template import RequestContext
-from django.core.cache import parse_backend_uri
 
 import datetime
 
+
 def server_list(request):
+    template = 'status.html'
     try:
         import memcache
     except:
         raise Http404
     stats = {}
     cache_servers = {}
+    dict_vars = {}
+    servers = None
     # It assumes that you're using a right configuration
-    servers = parse_backend_uri(settings.CACHE_BACKEND)[1].split(";")
+    try:
+        servers = settings.CACHES['default']['LOCATION']
+    except:
+        return render_to_response(template, dict_vars, RequestContext(request))
     for server in servers:
         host = memcache._Host(server)
         host.connect()
@@ -41,7 +47,7 @@ def server_list(request):
         if int(stats['cmd_get']) != 0:
             stats['hit_rate'] = 100 * int(stats['get_hits']) / int(stats['cmd_get'])
         stats['right_now'] = datetime.datetime.now()
-        
+
         limit_maxbytes = int(stats['bytes'])
         if int(stats['limit_maxbytes']) > 0:
             limit_maxbytes = int(stats['limit_maxbytes'])
@@ -50,6 +56,6 @@ def server_list(request):
         cache_servers[server] = stats
         # Close connection
         host.close_socket()
-    dict_vars = {'servers': cache_servers}
+    dict_vars['servers'] = cache_servers
 
-    return render_to_response('status.html', dict_vars, RequestContext(request))
+    return render_to_response(template, dict_vars, RequestContext(request))
